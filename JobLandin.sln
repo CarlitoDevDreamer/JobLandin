@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34814.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobLandin.Web", "JobLandin.Web\JobLandin.Web.csproj", "{659DC99A-4C4C-425C-AE34-A0B28B4F981B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{659DC99A-4C4C-425C-AE34-A0B28B4F981B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{659DC99A-4C4C-425C-AE34-A0B28B4F981B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{659DC99A-4C4C-425C-AE34-A0B28B4F981B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{659DC99A-4C4C-425C-AE34-A0B28B4F981B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22009131-1E54-4F3C-A4E3-22E60E4C311C}
+	EndGlobalSection
+EndGlobal
