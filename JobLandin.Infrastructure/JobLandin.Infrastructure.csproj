@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JobLandin.Domain\JobLandin.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
