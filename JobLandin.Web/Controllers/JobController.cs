@@ -41,6 +41,42 @@ namespace JobLandin.Web.Controllers
         }
 
 
+        //GET
+        public IActionResult Update(int jobId)
+        {
+            Job? obj = _db.Jobs.FirstOrDefault(u => u.Id == jobId);
+
+
+            if (obj is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            return View(obj);
+        }
+
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(Job obj)
+        {
+            if (ModelState.IsValid && obj.Id > 0)
+            {
+                _db.Jobs.Update(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Villa Updated Successfully";
+                //return RedirectToAction("Index"); //Magic Strings
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["erros"] = "Job Not Updated";
+            return View(obj);
+
+        }
+
+
+
+
+
 
     }
 }
