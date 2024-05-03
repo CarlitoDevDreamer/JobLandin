@@ -64,15 +64,52 @@ namespace JobLandin.Web.Controllers
             {
                 _db.Jobs.Update(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Villa Updated Successfully";
+                
                 //return RedirectToAction("Index"); //Magic Strings
                 return RedirectToAction(nameof(Index));
             }
-            TempData["erros"] = "Job Not Updated";
+            
             return View(obj);
 
         }
 
+
+
+        //GET DELETE
+        public IActionResult Delete(int jobId)
+        {
+            Job? obj = _db.Jobs.FirstOrDefault(u => u.Id == jobId);
+
+
+            if (obj is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            return View(obj);
+        }
+
+
+
+
+
+        //POST DELETE
+        [HttpPost]
+
+        public IActionResult Delete(Job obj)
+        {
+            Job? objFromDb = _db.Jobs.FirstOrDefault(u => u.Id == obj.Id);
+
+            if (objFromDb is not null)
+            {
+                _db.Jobs.Remove(objFromDb);
+                _db.SaveChanges();
+                //return RedirectToAction("Index"); //Magic Strings
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(obj);
+
+        }
 
 
 
