@@ -52,6 +52,47 @@ public class CompanyController : Controller
     
     
     
+    //GET
+    public IActionResult Update(int companyId)
+    {
+        Company? obj = _db.Companies.FirstOrDefault(u => u.CompanyId == companyId);
+
+        //Villa? obj2 = _db.Villas.Find(villaId);
+
+        //var VillaList = _db.Villas.Where(u => u.Price > 50 && u.Occupancy > 0).FirstOrDefault();
+
+        if (obj is null) {
+            return RedirectToAction("Error", "Home");
+        }
+        return View(obj);
+    }
+
+
+//POST
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Update(Company obj)
+    {
+        if (ModelState.IsValid && obj.CompanyId > 0)
+        {
+            _db.Companies.Update(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Company Updated Successfully";
+            //return RedirectToAction("Index"); //Magic Strings
+            return RedirectToAction(nameof(Index));
+        }
+        TempData["erros"] = "Company Not Updated";
+        return View(obj);
+
+    }
+
+    
+    
+    
+    
+    
+    
+    
     
     
 }
