@@ -106,7 +106,7 @@ namespace JobLandin.Web.Controllers
 
 
 
-        //POST
+        //POST UPDATE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(JobVM jobVM)
@@ -161,26 +161,26 @@ namespace JobLandin.Web.Controllers
 
 
         //POST DELETE
-        //POST DELETE
         [HttpPost]
-        public IActionResult Delete(JobVM jobVM)
+        public IActionResult Delete(JobVM jobVm)
         {
-            Company? objFromDb = _db.Companies
-                .FirstOrDefault(_ => _.CompanyId == jobVM.Job.Id);
+            Job? objFromDb = _db.Jobs
+                .FirstOrDefault(_ => _.Id == jobVm.Job.Id);
 
             if (objFromDb is not null)
             {
-                _db.Companies.Remove(objFromDb);
+                _db.Jobs.Remove(objFromDb);
                 _db.SaveChanges();
 
-                TempData["success"] = "The Job Offer has been deleted successfully.";
+                TempData["success"] = "The villa number has been deleted successfully.";
 
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["error"] = "The Job Offer could not be deleted.";
-            return View(jobVM);
+            TempData["error"] = "The villa number could not be deleted.";
+            return View(jobVm);
         }
+
 
 
 
