@@ -19,6 +19,10 @@ namespace JobLandin.Domain.Entities
         public int CompanyId { get; set; }
 
 
+        [ValidateNever]
+        public Company Company { get; set; } = null!;
+
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
@@ -29,5 +33,6 @@ namespace JobLandin.Domain.Entities
         public string ApplicationDetails { get; set; }
 
         public DateTime? CreatedAt { get; set; }
+        
     }
 }

@@ -10,7 +10,9 @@ namespace JobLandin.Infrastructure.Data
         {
         }
 
+        public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

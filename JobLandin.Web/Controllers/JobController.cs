@@ -1,6 +1,9 @@
 ﻿using JobLandin.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using JobLandin.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using JobLandin.Web.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace JobLandin.Web.Controllers
 {
@@ -14,7 +17,11 @@ namespace JobLandin.Web.Controllers
         }
         public IActionResult Index()
         {
-            var jobs = _db.Jobs.ToList();
+            
+            var jobs = _db.Jobs
+                .Include(u => u.Company)
+                .ToList();
+
             return View(jobs);
         }
 
@@ -23,21 +30,52 @@ namespace JobLandin.Web.Controllers
         //GET: Job/Create
         public IActionResult Create()
         {
-            return View();
+            JobVM jobVM = new()
+            {
+                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.CompanyName,
+                    Value = u.CompanyId.ToString()
+                })
+            };
+
+            return View(jobVM);
         }
 
-        //POST: Job/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Job job)
+        public IActionResult Create(JobVM obj)
         {
-            if (ModelState.IsValid)
+
+            bool jobExists = _db.Jobs.Any(u => u.Id == obj.VillaNumber.Villa_Number);
+
+            //ModelState.Remove("Villa"); equivalente ao ValidateNever
+            if (ModelState.IsValid && !roomNumberExists)
             {
-                _db.Jobs.Add(job);
+
+
+
+
+                _db.VillaNumbers.Add(obj.VillaNumber);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["success"] = "The villa number has been created successfully.";
+                return RedirectToAction(nameof(Index));
             }
-            return View(job);
+
+            if (roomNumberExists)
+            {
+                TempData["error"] = "The villa already exists.";
+            }
+
+
+            obj.VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+
+
+            return View(obj);
         }
 
 
