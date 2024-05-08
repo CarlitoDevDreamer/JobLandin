@@ -31,41 +31,41 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var job in Model)
+                @foreach (var obj in Model)
                 {
                     <tr>
-                        <td>@job.CompanyId</td>
-                        <td>@job.Title</td>
-                        <td>@job.Description</td>
-                        <td>@job.Location</td>
-                        <td>@job.Salary</td>
-                        <td>@job.ApplicationMethod</td>
+                        <td>@obj.CompanyId</td>
+                        <td>@obj.Title</td>
+                        <td>@obj.Description</td>
+                        <td>@obj.Location</td>
+                        <td>@obj.Salary</td>
+                        <td>@obj.ApplicationMethod</td>
                         <td>
-                            @if (job.ApplicationMethod == ApplicationType.Link)
+                            @if (obj.ApplicationMethod == ApplicationType.Link)
                             {
-                                <a href="@job.ApplicationDetails" class="btn btn-primary" target="_blank">Apply Now</a>
+                                <a href="@obj.ApplicationDetails" class="btn btn-primary" target="_blank">Apply Now</a>
                             }
-                            else if (job.ApplicationMethod == ApplicationType.Email)
+                            else if (obj.ApplicationMethod == ApplicationType.Email)
                             {
-                                <a href="mailto:@job.ApplicationDetails" class="btn btn-primary">Apply Now</a>
+                                <a href="mailto:@obj.ApplicationDetails" class="btn btn-primary">Apply Now</a>
                             }
-                            else if (job.ApplicationMethod == ApplicationType.Phone)
+                            else if (obj.ApplicationMethod == ApplicationType.Phone)
                             {
-                                <a href="tel:@job.ApplicationDetails" class="btn btn-primary">Apply Now</a>
+                                <a href="tel:@obj.ApplicationDetails" class="btn btn-primary">Apply Now</a>
                             }
                             else
                             {
-                                <button type="button" class="btn btn-primary" onclick="handleApplication('@job.ApplicationMethod', '@job.ApplicationDetails')">Apply Now</button>
+                                <button type="button" class="btn btn-primary" onclick="handleApplication('@obj.ApplicationMethod', '@obj.ApplicationDetails')">Apply Now</button>
                             }
                         </td>
 
-                        <td>@job.CreatedAt</td>
+                        <td>@obj.CreatedAt</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
-                                <a asp-action="Update" asp-route-jobId="@job.Id" class="btn btn-success mx-2">
+                                <a asp-action="Update" asp-route-jobId="@obj.Id" class="btn btn-success mx-2">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
-                                <a asp-action="Delete" asp-route-jobId="@job.Id" class="btn btn-danger mx-2">
+                                <a asp-action="Delete" asp-route-jobId="@obj.Id" class="btn btn-danger mx-2">
                                     <i class="bi bi-trash"></i> Delete
                                 </a>
                             </div>

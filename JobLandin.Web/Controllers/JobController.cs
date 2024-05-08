@@ -82,10 +82,12 @@ namespace JobLandin.Web.Controllers
         }
 
 
+        //GET UPDATE
+
         //GET
         public IActionResult Update(int jobId)
         {
-            JobVM jobVM = new()
+            JobVM jobVm = new()
             {
                 CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
                 {
@@ -95,12 +97,13 @@ namespace JobLandin.Web.Controllers
                 Job = _db.Jobs.FirstOrDefault(u => u.Id == jobId)
             };
 
-            if (jobVM.Job is null)
+            if (jobVm.Job is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(jobVM);
+            return View(jobVm);
         }
+
 
 
         //POST
