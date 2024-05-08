@@ -1,4 +1,4 @@
-﻿@model Job
+﻿@model JobVM
 
 <div class="w-100 card border-0 p-4">
     <div class="card-header bg-success bg-gradient m-lg-0 py-3">
@@ -12,30 +12,72 @@
         <form method="post" class="row">
             <div class="p-3">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="Title" class="form-control border shadow" />
-                    <label asp-for="Title" class="ms-2"></label>
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <select asp-for="@Model.Job!.CompanyId" asp-items="@Model.CompanyList"
+                            class="form-select border-bottom shadow">
+                        <option disabled selected>-- Select Company --</option>
+                    </select>
+
+
+                    <label asp-for="Job!.CompanyId" class="ms-2"></label>
+                    <span asp-validation-for="Job!.CompanyId" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Job!.Title" class="form-control border shadow" />
+                    <label asp-for="Job!.Title" class="ms-2"></label>
+                    <span asp-validation-for="Job!.Title" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="Description" class="form-control border shadow" />
-                    <label asp-for="Description" class="ms-2"></label>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <input asp-for="Job!.Description" class="form-control border shadow" />
+                    <label asp-for="Job!.Description" class="ms-2"></label>
+                    <span asp-validation-for="Job!.Description" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="Location" class="form-control border shadow" />
-                    <label asp-for="Location" class="ms-2"></label>
-                    <span asp-validation-for="Location" class="text-danger"></span>
+                    <input asp-for="Job!.Location" class="form-control border shadow" />
+                    <label asp-for="Job!.Location" class="ms-2"></label>
+                    <span asp-validation-for="Job!.Location" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="Salary" class="form-control border shadow" />
-                    <label asp-for="Salary" class="ms-2"></label>
-                    <span asp-validation-for="Salary" class="text-danger"></span>
+                    <input asp-for="Job!.Salary" class="form-control border shadow" />
+                    <label asp-for="Job!.Salary" class="ms-2"></label>
+                    <span asp-validation-for="Job!.Salary" class="text-danger"></span>
                 </div>
+
+
+
+
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="CreatedAt" class="form-control border shadow" />
-                    <label asp-for="CreatedAt" class="ms-2"></label>
-                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    <select asp-for="@Model.Job!.ApplicationMethod" asp-items="@(new SelectList(Enum.GetValues(typeof(ApplicationType))))" class="form-select border-bottom shadow">
+                        <option disabled selected>-- Select Application Method --</option>
+                    </select>
+
+
+                    <label asp-for="Job!.ApplicationMethod" class="ms-2"></label>
+                    <span asp-validation-for="Job!.ApplicationMethod" class="text-danger"></span>
+                </div>
+
+
+
+
+
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Job!.ApplicationDetails" class="form-control border shadow" />
+                    <label asp-for="Job!.ApplicationDetails" class="ms-2"></label>
+                    <span asp-validation-for="Job!.ApplicationDetails" class="text-danger"></span>
+                </div>
+                
+                
+                
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Job!.CreatedAt" class="form-control border shadow" />
+                    <label asp-for="Job!.CreatedAt" class="ms-2"></label>
+                    <span asp-validation-for="Job!.CreatedAt" class="text-danger"></span>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">

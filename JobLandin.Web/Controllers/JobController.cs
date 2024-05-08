@@ -46,34 +46,37 @@ namespace JobLandin.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(JobVM obj)
         {
-
-            bool jobExists = _db.Jobs.Any(u => u.Id == obj.Job.Id);
-
-            //ModelState.Remove("Villa"); equivalente ao ValidateNever
-            if (ModelState.IsValid && !jobExists)
+            
+  /* Para imprimir os erros de validação          
+            if (!ModelState.IsValid)
             {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { x.Key, x.Value.Errors })
+                    .ToArray();
 
-
-
-
+                foreach (var error in errors)
+                {
+                    foreach (var subError in error.Errors)
+                    {
+                        Console.WriteLine($"Key: {error.Key}, Error: {subError.ErrorMessage}");
+                    }
+                }
+            }
+*/
+            if (ModelState.IsValid)
+            {
                 _db.Jobs.Add(obj.Job);
                 _db.SaveChanges();
                 TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-
-            if (jobExists)
-            {
-                TempData["error"] = "The Job Offer already exists.";
-            }
-
-
+            
             obj.CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
             {
                 Text = u.CompanyName,
                 Value = u.CompanyId.ToString()
             });
-
 
             return View(obj);
         }

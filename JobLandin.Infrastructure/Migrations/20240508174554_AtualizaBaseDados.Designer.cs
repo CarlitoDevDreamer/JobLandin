@@ -4,6 +4,7 @@ using JobLandin.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobLandin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240508174554_AtualizaBaseDados")]
+    partial class AtualizaBaseDados
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +148,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "https://www.google.com/careers/",
                             ApplicationMethod = 0,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 5, 8, 18, 51, 31, 37, DateTimeKind.Local).AddTicks(6546),
+                            CreatedAt = new DateTime(2024, 5, 8, 18, 45, 54, 234, DateTimeKind.Local).AddTicks(8184),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Lagos",
                             Salary = 2000m,
@@ -157,7 +160,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "data@email.com",
                             ApplicationMethod = 1,
                             CompanyId = 3,
-                            CreatedAt = new DateTime(2024, 5, 8, 18, 51, 31, 37, DateTimeKind.Local).AddTicks(6600),
+                            CreatedAt = new DateTime(2024, 5, 8, 18, 45, 54, 234, DateTimeKind.Local).AddTicks(8234),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Abuja",
                             Salary = 1500m,
@@ -169,7 +172,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "08012345678",
                             ApplicationMethod = 2,
                             CompanyId = 2,
-                            CreatedAt = new DateTime(2024, 5, 8, 18, 51, 31, 37, DateTimeKind.Local).AddTicks(6603),
+                            CreatedAt = new DateTime(2024, 5, 8, 18, 45, 54, 234, DateTimeKind.Local).AddTicks(8237),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Port Harcourt",
                             Salary = 2500m,

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobLandin.Domain.Entities
@@ -30,8 +31,10 @@ namespace JobLandin.Domain.Entities
         public decimal? Salary { get; set; }
 
         //ADD A LINK OR CONTACT FOR JOB APPLICATION
-        public ApplicationType ApplicationMethod { get; set; }
-        public string ApplicationDetails { get; set; }
+        public ApplicationType? ApplicationMethod { get; set; }
+        
+        [Display(Name = "Insert https:// before links or email or phone number")]
+        public string? ApplicationDetails { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         
