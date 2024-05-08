@@ -47,31 +47,31 @@ namespace JobLandin.Web.Controllers
         public IActionResult Create(JobVM obj)
         {
 
-            bool jobExists = _db.Jobs.Any(u => u.Id == obj.VillaNumber.Villa_Number);
+            bool jobExists = _db.Jobs.Any(u => u.Id == obj.Job.Id);
 
             //ModelState.Remove("Villa"); equivalente ao ValidateNever
-            if (ModelState.IsValid && !roomNumberExists)
+            if (ModelState.IsValid && !jobExists)
             {
 
 
 
 
-                _db.VillaNumbers.Add(obj.VillaNumber);
+                _db.Jobs.Add(obj.Job);
                 _db.SaveChanges();
-                TempData["success"] = "The villa number has been created successfully.";
+                TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
-            if (roomNumberExists)
+            if (jobExists)
             {
-                TempData["error"] = "The villa already exists.";
+                TempData["error"] = "The Job Offer already exists.";
             }
 
 
-            obj.VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+            obj.CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
+                Text = u.CompanyName,
+                Value = u.CompanyId.ToString()
             });
 
 
