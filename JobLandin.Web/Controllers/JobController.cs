@@ -82,72 +82,100 @@ namespace JobLandin.Web.Controllers
         //GET
         public IActionResult Update(int jobId)
         {
-            Job? obj = _db.Jobs.FirstOrDefault(u => u.Id == jobId);
+            JobVM jobVM = new()
+            {
+                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.CompanyName,
+                    Value = u.CompanyId.ToString()
+                }),
+                Job = _db.Jobs.FirstOrDefault(u => u.Id == jobId)
+            };
 
-
-            if (obj is null)
+            if (jobVM.Job is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(obj);
+            return View(jobVM);
         }
 
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(Job obj)
+        public IActionResult Update(JobVM jobVM)
         {
-            if (ModelState.IsValid && obj.Id > 0)
+
+            if (ModelState.IsValid)
             {
-                _db.Jobs.Update(obj);
+                _db.Jobs.Update(jobVM.Job);
                 _db.SaveChanges();
-                
-                //return RedirectToAction("Index"); //Magic Strings
+                TempData["success"] = "The Job Offer has been updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View(obj);
+
+
+
+
+            jobVM.CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+            {
+                Text = u.CompanyName,
+                Value = u.CompanyId.ToString()
+            });
+
+
+            return View(jobVM);
 
         }
 
 
 
         //GET DELETE
+        //GET
         public IActionResult Delete(int jobId)
         {
-            Job? obj = _db.Jobs.FirstOrDefault(u => u.Id == jobId);
+            JobVM jobVM = new()
+            {
+                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.CompanyName,
+                    Value = u.CompanyId.ToString()
+                }),
+                Job = _db.Jobs.FirstOrDefault(u => u.Id == jobId)
+            };
 
-
-            if (obj is null)
+            if (jobVM.Job is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(obj);
+            return View(jobVM);
         }
-
 
 
 
 
         //POST DELETE
+        //POST DELETE
         [HttpPost]
-
-        public IActionResult Delete(Job obj)
+        public IActionResult Delete(JobVM jobVM)
         {
-            Job? objFromDb = _db.Jobs.FirstOrDefault(u => u.Id == obj.Id);
+            Company? objFromDb = _db.Companies
+                .FirstOrDefault(_ => _.CompanyId == jobVM.Job.Id);
 
             if (objFromDb is not null)
             {
-                _db.Jobs.Remove(objFromDb);
+                _db.Companies.Remove(objFromDb);
                 _db.SaveChanges();
-                //return RedirectToAction("Index"); //Magic Strings
+
+                TempData["success"] = "The Job Offer has been deleted successfully.";
+
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(obj);
-
+            TempData["error"] = "The Job Offer could not be deleted.";
+            return View(jobVM);
         }
+
 
 
 

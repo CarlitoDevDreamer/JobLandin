@@ -7,6 +7,6 @@ namespace JobLandin.Web.ViewModels
     {
         public Job? Job { get; set; }
 
-        public IEnumerable<SelectListItem> JobList { get; set; }
+        public IEnumerable<SelectListItem> CompanyList { get; set; }
     }
 }
