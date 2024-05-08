@@ -19,10 +19,13 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Company</th>
                     <th>Job Title</th>
                     <th>Job Description</th>
                     <th>Job Location</th>
                     <th>Salary</th>
+                    <th>Application Method</th>
+                    <th>Apply Now</th>
                     <th>Date Created</th>
                     <th></th>
                 </tr>
@@ -31,10 +34,31 @@
                 @foreach (var job in Model)
                 {
                     <tr>
+                        <td>@job.CompanyId</td>
                         <td>@job.Title</td>
                         <td>@job.Description</td>
                         <td>@job.Location</td>
                         <td>@job.Salary</td>
+                        <td>@job.ApplicationMethod</td>
+                        <td>
+                            @if (job.ApplicationMethod == ApplicationType.Link)
+                            {
+                                <a href="@job.ApplicationDetails" class="btn btn-primary" target="_blank">Apply Now</a>
+                            }
+                            else if (job.ApplicationMethod == ApplicationType.Email)
+                            {
+                                <a href="mailto:@job.ApplicationDetails" class="btn btn-primary">Apply Now</a>
+                            }
+                            else if (job.ApplicationMethod == ApplicationType.Phone)
+                            {
+                                <a href="tel:@job.ApplicationDetails" class="btn btn-primary">Apply Now</a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary" onclick="handleApplication('@job.ApplicationMethod', '@job.ApplicationDetails')">Apply Now</button>
+                            }
+                        </td>
+
                         <td>@job.CreatedAt</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
