@@ -92,6 +92,50 @@ public class CompanyController : Controller
     
     
     
+    //GET DELETE
+    public IActionResult Delete(int companyId)
+    {
+        Company? obj = _db.Companies.FirstOrDefault(u => u.CompanyId == companyId);
+
+        //Villa? obj2 = _db.Villas.Find(villaId);
+
+        //var VillaList = _db.Villas.Where(u => u.Price > 50 && u.Occupancy > 0).FirstOrDefault();
+
+        if (obj is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        return View(obj);
+    }
+
+
+
+
+
+//POST DELETE
+    [HttpPost]
+
+    public IActionResult Delete(Company obj)
+    {
+        Company? objFromDb = _db.Companies.FirstOrDefault(u => u.CompanyId == obj.CompanyId);
+
+        if (objFromDb is not null)
+        {
+            _db.Companies.Remove(objFromDb);
+            _db.SaveChanges();
+            TempData["success"] = "Villa Deleted Successfully";
+            //return RedirectToAction("Index"); //Magic Strings
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["erros"] = "Villa Not Deleted";
+        return View(obj);
+
+    }
+    
+    
+    
+    
     
     
     
