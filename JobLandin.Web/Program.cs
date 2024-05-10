@@ -1,4 +1,6 @@
+using JobLandin.Application.Common.Interfaces;
 using JobLandin.Infrastructure.Data;
+using JobLandin.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,12 @@ builder.Services.AddControllersWithViews();
 //Add ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+//Add Repositories
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
 
 var app = builder.Build();
 
