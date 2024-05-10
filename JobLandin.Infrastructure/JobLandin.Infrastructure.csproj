@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JobLandin.Domain\JobLandin.Domain.csproj" />
+    <ProjectReference Include="..\JobLandin.Application\JobLandin.Application.csproj" />
   </ItemGroup>
 
 </Project>

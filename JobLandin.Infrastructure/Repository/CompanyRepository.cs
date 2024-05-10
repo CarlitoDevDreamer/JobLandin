@@ -1,6 +1,7 @@
 ﻿using JobLandin.Application.Common.Interfaces;
 using JobLandin.Domain.Entities;
 using JobLandin.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace JobLandin.Infrastructure.Repository
@@ -18,29 +19,53 @@ namespace JobLandin.Infrastructure.Repository
             _db.Add(entity);
         }
 
-        public IEnumerable<Company> Get(Expression<Func<Company, bool>> filter, string? includeProperties = null)
+        public Company Get(Expression<Func<Company, bool>> filter, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<Company> query = _db.Set<Company>();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeprop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperties);
+                }
+            }
+            return query.FirstOrDefault()!;
         }
 
         public IEnumerable<Company> GetAll(Expression<Func<Company, bool>>? filter = null, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<Company> query = _db.Set<Company>();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach(var includeprop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) 
+                {
+                query = query.Include(includeProperties);
+                }
+            }
+            return query.ToList();
         }
 
         public void Remove(Company entity)
         {
-            throw new NotImplementedException();
+            _db.Remove(entity);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _db.SaveChanges();
         }
 
         public void Update(Company entity)
         {
-            throw new NotImplementedException();
+            _db.Update(entity);
         }
     }
 }

@@ -172,12 +172,12 @@ namespace JobLandin.Web.Controllers
                 _db.Jobs.Remove(objFromDb);
                 _db.SaveChanges();
 
-                TempData["success"] = "The villa number has been deleted successfully.";
+                TempData["success"] = "The Job Offer has been deleted successfully.";
 
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["error"] = "The villa number could not be deleted.";
+            TempData["error"] = "The Job Offer could not be deleted.";
             return View(jobVm);
         }
 
