@@ -9,6 +9,7 @@ namespace JobLandin.Application.Common.Interfaces
     public interface IUnitOfWork
     {
         ICompanyRepository Company { get; }
+        IJobRepository Job { get; }
         void Save();
     }
 }

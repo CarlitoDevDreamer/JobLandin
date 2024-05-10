@@ -4,18 +4,18 @@ using JobLandin.Infrastructure.Data;
 
 namespace JobLandin.Infrastructure.Repository
 {
-    public class CompanyRepository : Repository<Company>, ICompanyRepository
+    public class JobRepository : Repository<Job>, IJobRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public CompanyRepository(ApplicationDbContext db) : base(db)
+        public JobRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
        
 
 
-        public void Update(Company entity)
+        public void Update(Job entity)
         {
             _db.Update(entity);
         }

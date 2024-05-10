@@ -13,16 +13,18 @@ namespace JobLandin.Infrastructure.Repository
 
         private readonly ApplicationDbContext _db;
         public ICompanyRepository Company { get; private set; }
+        public IJobRepository Job { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Company = new CompanyRepository(db);
+            Job = new JobRepository(db);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _db.SaveChanges();
         }
     }
 }

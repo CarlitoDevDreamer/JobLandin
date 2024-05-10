@@ -6,6 +6,6 @@ namespace JobLandin.Application.Common.Interfaces
     public interface ICompanyRepository : IRepository<Company>
     {
         void Update(Company entity);
-        void Save();
+        
     }
 }

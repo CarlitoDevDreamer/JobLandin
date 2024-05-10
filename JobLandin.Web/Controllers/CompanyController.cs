@@ -36,7 +36,7 @@ namespace JobLandin.Web.Controllers
             if (ModelState.IsValid)
             {
                 _unitOfWork.Company.Add(obj);
-                _unitOfWork.Company.Save();
+                _unitOfWork.Save();
                 TempData["success"] = "Company Created Successfully";
                 //return RedirectToAction("Index"); //Magic Strings
                 return RedirectToAction(nameof(Index));
@@ -74,7 +74,7 @@ namespace JobLandin.Web.Controllers
             if (ModelState.IsValid && obj.CompanyId > 0)
             {
                 _unitOfWork.Company.Update(obj);
-                _unitOfWork.Company.Save();
+                _unitOfWork.Save();
                 TempData["success"] = "Company Updated Successfully";
                 //return RedirectToAction("Index"); //Magic Strings
                 return RedirectToAction(nameof(Index));
@@ -120,7 +120,7 @@ namespace JobLandin.Web.Controllers
             if (objFromDb is not null)
             {
                 _unitOfWork.Company.Remove(objFromDb);
-                _unitOfWork.Company.Save();
+                _unitOfWork.Save();
                 TempData["success"] = "Villa Deleted Successfully";
                 //return RedirectToAction("Index"); //Magic Strings
                 return RedirectToAction(nameof(Index));
