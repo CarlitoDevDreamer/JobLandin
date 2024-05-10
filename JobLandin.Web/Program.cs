@@ -14,8 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 
-//Add Repositories
-builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+//Add UnitOfWork (acesso aos repositórios)
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var app = builder.Build();
