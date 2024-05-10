@@ -6,7 +6,7 @@ namespace JobLandin.Web.ViewModels
 {
     public class JobVM
     {
-        public Job? Job { get; set; } = null!;
+        public Job Job { get; set; } = null!;
 
 
         [ValidateNever]
