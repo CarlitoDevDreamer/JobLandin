@@ -4,23 +4,22 @@ using JobLandin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using JobLandin.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using JobLandin.Application.Common.Interfaces;
 
 namespace JobLandin.Web.Controllers
 {
     public class JobController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public JobController(ApplicationDbContext db)
+        public JobController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            
-            var jobs = _db.Jobs
-                .Include(u => u.Company)
-                .ToList();
+
+            var jobs = _unitOfWork.Job.GetAll(includeProperties: "Company");
 
             return View(jobs);
         }
@@ -32,7 +31,7 @@ namespace JobLandin.Web.Controllers
         {
             JobVM jobVM = new()
             {
-                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.CompanyName,
                     Value = u.CompanyId.ToString()
@@ -47,32 +46,16 @@ namespace JobLandin.Web.Controllers
         public IActionResult Create(JobVM obj)
         {
             
-  /* Para imprimir os erros de validação          
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .Select(x => new { x.Key, x.Value.Errors })
-                    .ToArray();
 
-                foreach (var error in errors)
-                {
-                    foreach (var subError in error.Errors)
-                    {
-                        Console.WriteLine($"Key: {error.Key}, Error: {subError.ErrorMessage}");
-                    }
-                }
-            }
-*/
             if (ModelState.IsValid)
             {
-                _db.Jobs.Add(obj.Job);
-                _db.SaveChanges();
+                _unitOfWork.Job.Add(obj.Job);
+                _unitOfWork.Save();
                 TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             
-            obj.CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+            obj.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CompanyName,
                 Value = u.CompanyId.ToString()
@@ -89,12 +72,12 @@ namespace JobLandin.Web.Controllers
         {
             JobVM jobVm = new()
             {
-                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.CompanyName,
                     Value = u.CompanyId.ToString()
                 }),
-                Job = _db.Jobs.FirstOrDefault(u => u.Id == jobId)
+                Job = _unitOfWork.Job.Get(u => u.Id == jobId)
             };
 
             if (jobVm.Job is null)
@@ -114,8 +97,8 @@ namespace JobLandin.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Jobs.Update(jobVM.Job);
-                _db.SaveChanges();
+                _unitOfWork.Job.Update(jobVM.Job);
+                _unitOfWork.Save();
                 TempData["success"] = "The Job Offer has been updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -123,7 +106,7 @@ namespace JobLandin.Web.Controllers
 
 
 
-            jobVM.CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+            jobVM.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CompanyName,
                 Value = u.CompanyId.ToString()
@@ -142,12 +125,12 @@ namespace JobLandin.Web.Controllers
         {
             JobVM jobVM = new()
             {
-                CompanyList = _db.Companies.ToList().Select(u => new SelectListItem
+                CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.CompanyName,
                     Value = u.CompanyId.ToString()
                 }),
-                Job = _db.Jobs.FirstOrDefault(u => u.Id == jobId)
+                Job = _unitOfWork.Job.Get(u => u.Id == jobId)
             };
 
             if (jobVM.Job is null)
@@ -164,13 +147,12 @@ namespace JobLandin.Web.Controllers
         [HttpPost]
         public IActionResult Delete(JobVM jobVm)
         {
-            Job? objFromDb = _db.Jobs
-                .FirstOrDefault(_ => _.Id == jobVm.Job.Id);
+            Job? objFromDb = _unitOfWork.Job.Get(_ => _.Id == jobVm.Job.Id);
 
             if (objFromDb is not null)
             {
-                _db.Jobs.Remove(objFromDb);
-                _db.SaveChanges();
+                _unitOfWork.Job.Remove(objFromDb);
+                _unitOfWork.Save();
 
                 TempData["success"] = "The Job Offer has been deleted successfully.";
 
