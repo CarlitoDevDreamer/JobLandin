@@ -29,41 +29,47 @@ namespace JobLandin.Web.Controllers
         {
             return View();
         }
-
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Company obj)
         {
-
             if (ModelState.IsValid)
             {
-
-                //Logo File Upload
-                if (obj.Image != null)
+                try
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
-                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\CompanyLogos");
-                    using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
-                    obj.Image.CopyTo(fileStream);
+                    //Logo File Upload
+                    if (obj.Image != null)
+                    {
+                        Console.WriteLine("Image is not null, proceeding with file upload."); // Logging
 
-                    obj.LogoUrl = @"\images\CompanyLogos\" + fileName;
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\CompanyLogos");
+                        using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
+                        obj.Image.CopyTo(fileStream);
+
+                        obj.LogoUrl = @"\images\CompanyLogos\" + fileName;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Image is null, using default logo URL."); // Logging
+                        obj.LogoUrl = "https://placehold.co/600x400";
+                    }
+
+                    _unitOfWork.Company.Add(obj);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Company Created Successfully";
+                    return RedirectToAction(nameof(Index));
                 }
-                else
+                catch (Exception ex)
                 {
-                    obj.LogoUrl = "https://placehold.co/600x400";
+                    // Log the exception here
+                    Console.WriteLine("Error while creating company: " + ex.Message); // Logging
+                    TempData["errors"] = "Error while creating company: " + ex.Message;
                 }
-
-
-                _unitOfWork.Company.Add(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Company Created Successfully";
-                //return RedirectToAction("Index"); //Magic Strings
-                return RedirectToAction(nameof(Index));
             }
-            TempData["erros"] = "Company Not Created";
+            TempData["errors"] = "Company Not Created";
             return View(obj);
-
         }
 
 
