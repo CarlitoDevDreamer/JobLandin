@@ -1,6 +1,7 @@
 ﻿using JobLandin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JobLandin.Infrastructure.Data
 {
@@ -29,10 +30,10 @@ namespace JobLandin.Infrastructure.Data
                 Size = 1000,
                 Description = "Google is a multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, a search engine, cloud computing, software, and hardware.",
                 Website = "https://www.google.com",
-                Logo = Encoding.ASCII.GetBytes("google_logo"),
-            
-            
-            
+                LogoUrl = "https://placehold.co/600x400",
+
+
+
             }, 
             new Company
             {
@@ -43,7 +44,7 @@ namespace JobLandin.Infrastructure.Data
                 Size = 500,
                 Description = "Facebook is an American online social media and social networking service company based in Menlo Park, California.",
                 Website = "https://www.facebook.com",
-                Logo = Encoding.ASCII.GetBytes("facebook_logo"),
+                LogoUrl = "https://placehold.co/600x400",
             }, 
             new Company
             {
@@ -54,7 +55,7 @@ namespace JobLandin.Infrastructure.Data
                 Size = 2000,
                 Description = "Microsoft Corporation is an American multinational technology company with headquarters in Redmond, Washington.",
                 Website = "https://www.microsoft.com",
-                Logo = Encoding.ASCII.GetBytes("microsoft_logo"),
+                LogoUrl = "https://placehold.co/600x400",
 
             }
 

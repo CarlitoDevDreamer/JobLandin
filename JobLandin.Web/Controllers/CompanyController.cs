@@ -40,7 +40,7 @@ namespace JobLandin.Web.Controllers
             {
 
                 //Logo File Upload
-                if(obj.Image != null)
+                if (obj.Image != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
                     string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\CompanyLogos");
@@ -48,7 +48,8 @@ namespace JobLandin.Web.Controllers
                     obj.Image.CopyTo(fileStream);
 
                     obj.LogoUrl = @"\images\CompanyLogos\" + fileName;
-                } else
+                }
+                else
                 {
                     obj.LogoUrl = "https://placehold.co/600x400";
                 }
