@@ -34,7 +34,7 @@
                 @foreach (var obj in Model)
                 {
                     <tr>
-                        <td>@obj.Company.CompanyName</td>
+                        <td>@obj.Company.CompanyName<img src="@obj.Company.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
                         <td>@obj.Title</td>
                         <td>@obj.Description</td>
                         <td>@obj.Location</td>
