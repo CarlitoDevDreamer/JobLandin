@@ -1,5 +1,6 @@
 ﻿using JobLandin.Application.Common.Interfaces;
 using JobLandin.Domain.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobLandin.Web.Controllers
@@ -8,10 +9,12 @@ namespace JobLandin.Web.Controllers
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CompanyController(IUnitOfWork unitOfWork)
+        public CompanyController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -35,6 +38,22 @@ namespace JobLandin.Web.Controllers
 
             if (ModelState.IsValid)
             {
+
+                //Logo File Upload
+                if(obj.Image != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\CompanyLogos");
+                    using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
+                    obj.Image.CopyTo(fileStream);
+
+                    obj.LogoUrl = @"\images\CompanyLogos\" + fileName;
+                } else
+                {
+                    obj.LogoUrl = "https://placehold.co/600x400";
+                }
+
+
                 _unitOfWork.Company.Add(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Company Created Successfully";
