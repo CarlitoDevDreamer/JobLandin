@@ -1,4 +1,8 @@
-﻿namespace JobLandin.Domain.Entities
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace JobLandin.Domain.Entities
 {
     public class Company
     {
@@ -9,6 +13,14 @@
         public int Size { get; set; }
         public string Description { get; set; }
         public string Website { get; set; }
-        public byte[]? Logo { get; set; }
+        //public byte[]? Logo { get; set; }
+
+
+        [NotMapped]
+        public IFormFile? Image { get; set; }
+
+
+        [Display(Name = "Logo Url")]
+        public string? LogoUrl { get; set; }
     }
 }
