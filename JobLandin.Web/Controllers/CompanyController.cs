@@ -99,15 +99,30 @@ namespace JobLandin.Web.Controllers
         {
             if (ModelState.IsValid && obj.CompanyId > 0)
             {
+                //Logo File Upload
+                if (obj.Image != null)
+                {
+                    Console.WriteLine("Image is not null, proceeding with file upload."); // Logging
+
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\CompanyLogos");
+                    using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
+                    obj.Image.CopyTo(fileStream);
+
+                    obj.LogoUrl = @"\images\CompanyLogos\" + fileName;
+                }
+                else
+                {
+                    Console.WriteLine("Image is null, using existing logo URL."); // Logging
+                }
+
                 _unitOfWork.Company.Update(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Company Updated Successfully";
-                //return RedirectToAction("Index"); //Magic Strings
                 return RedirectToAction(nameof(Index));
             }
-            TempData["erros"] = "Company Not Updated";
+            TempData["errors"] = "Company Not Updated";
             return View(obj);
-
         }
 
 
