@@ -39,7 +39,7 @@
                         <td>@obj.Size</td>
                         <td>@obj.Description</td>
                         <td>@obj.Website</td>
-                        <td>@obj.Image</td>
+                        <td><img src="@obj.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-action="Update" asp-route-companyId="@obj.CompanyId" class="btn btn-success mx-2">
