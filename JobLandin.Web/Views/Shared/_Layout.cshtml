@@ -58,13 +58,21 @@
         </div>
     </footer>
     <script type="text/javascript">
-        document.getElementById('btnSwitch').addEventListener('click', () => {
-            if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                document.documentElement.setAttribute('data-bs-theme', 'light');
-            } else {
-                document.documentElement.setAttribute('data-bs-theme', 'dark');
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // On page load, set the theme from localStorage
+            var theme = localStorage.getItem('theme');
+            if (theme) {
+                document.documentElement.setAttribute('data-bs-theme', theme);
             }
-        })
+        });
+
+        document.getElementById('btnSwitch').addEventListener('click', () => {
+            // On switch click, toggle the theme and save it in localStorage
+            var theme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
