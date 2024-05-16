@@ -14,7 +14,7 @@ namespace JobLandin.Domain.Entities
 
     public class Job
     {
-        public int Id { get; set; } //Branch
+        public int Id { get; set; }
 
 
         [ForeignKey("Company")]
