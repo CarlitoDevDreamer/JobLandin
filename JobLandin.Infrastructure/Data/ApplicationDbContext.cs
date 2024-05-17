@@ -1,4 +1,5 @@
 ﻿using JobLandin.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -6,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace JobLandin.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -19,6 +20,13 @@ namespace JobLandin.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // base.OnModelCreating(modelBuilder);
+
+
+            base.OnModelCreating(modelBuilder);
+
+
+
+
 
 
             modelBuilder.Entity<Company>().HasData(new Company
