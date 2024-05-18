@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobLandin.Domain.Entities
 {
-    public class Company
+    public class Company //Final Safe Version Before Starting New Feature Testing
     {
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
