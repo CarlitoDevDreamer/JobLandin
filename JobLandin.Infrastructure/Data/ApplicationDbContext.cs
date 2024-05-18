@@ -15,7 +15,7 @@ namespace JobLandin.Infrastructure.Data
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
-        
+
         public DbSet<ApplicationUser> applicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,11 @@ namespace JobLandin.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
 
-
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Company)
+                .WithOne(b => b.User)
+                .HasForeignKey<Company>(b => b.UserId)
+                .IsRequired(false);
 
 
 
@@ -43,7 +47,7 @@ namespace JobLandin.Infrastructure.Data
 
 
 
-            }, 
+            },
             new Company
             {
                 CompanyId = 2,
@@ -54,7 +58,7 @@ namespace JobLandin.Infrastructure.Data
                 Description = "Facebook is an American online social media and social networking service company based in Menlo Park, California.",
                 Website = "https://www.facebook.com",
                 LogoUrl = "https://placehold.co/600x400",
-            }, 
+            },
             new Company
             {
                 CompanyId = 3,

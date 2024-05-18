@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using JobLandin.Domain.Entities;
+using JobLandin.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -40,7 +42,8 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -49,6 +52,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -165,6 +169,33 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+
+
+
+                    if (Input.Role == SD.Role_Company)
+                    {
+                        var company = new Company
+                        {
+                            CompanyName = Input.Name,
+                            Location = Input.Address,
+                            UserId = user.Id
+
+                        };
+
+                        // save company to database and get the generated id
+                         _context.Companies.Add(company);
+                         await _context.SaveChangesAsync();
+
+                        // set the CompanyId for the user
+                        user.CompanyId = company.CompanyId;
+                    }
+
+
+
+
+
+
 
 
                     if (!String.IsNullOrEmpty(Input.Role))

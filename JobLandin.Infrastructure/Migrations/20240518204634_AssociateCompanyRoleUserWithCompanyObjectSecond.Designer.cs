@@ -4,6 +4,7 @@ using JobLandin.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobLandin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240518204634_AssociateCompanyRoleUserWithCompanyObjectSecond")]
+    partial class AssociateCompanyRoleUserWithCompanyObjectSecond
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +38,11 @@ namespace JobLandin.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Industry")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -47,13 +52,14 @@ namespace JobLandin.Infrastructure.Migrations
                     b.Property<string>("LogoUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Size")
+                    b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Website")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompanyId");
@@ -148,7 +154,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "https://www.google.com/careers/",
                             ApplicationMethod = 0,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 5, 18, 21, 53, 13, 441, DateTimeKind.Local).AddTicks(2843),
+                            CreatedAt = new DateTime(2024, 5, 18, 21, 46, 33, 954, DateTimeKind.Local).AddTicks(5578),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Lagos",
                             Salary = 2000m,
@@ -160,7 +166,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "data@email.com",
                             ApplicationMethod = 1,
                             CompanyId = 3,
-                            CreatedAt = new DateTime(2024, 5, 18, 21, 53, 13, 441, DateTimeKind.Local).AddTicks(2898),
+                            CreatedAt = new DateTime(2024, 5, 18, 21, 46, 33, 954, DateTimeKind.Local).AddTicks(5627),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Abuja",
                             Salary = 1500m,
@@ -172,7 +178,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "08012345678",
                             ApplicationMethod = 2,
                             CompanyId = 2,
-                            CreatedAt = new DateTime(2024, 5, 18, 21, 53, 13, 441, DateTimeKind.Local).AddTicks(2902),
+                            CreatedAt = new DateTime(2024, 5, 18, 21, 46, 33, 954, DateTimeKind.Local).AddTicks(5631),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Port Harcourt",
                             Salary = 2500m,
