@@ -24,8 +24,17 @@
 
                     <label asp-for="Job!.CompanyId" class="ms-2"></label>
                     <span asp-validation-for="Job!.CompanyId" class="text-danger"></span>
-                </div>
+                    </div>
+                } else
+                {
+                    <div class="form-floating py-1 col-12">
+                        <input type="hidden" asp-for="@Model.Job!.CompanyId" />
+                    </div>
+                    
+
                 }
+
+
 
 
                 <div class="form-floating py-1 col-12">
