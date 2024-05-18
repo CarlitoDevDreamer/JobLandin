@@ -110,6 +110,14 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
+
+            [Required]
+            public String Name { get; set; }
+            public string? Address { get; set; }
+            public string? City { get; set; }
+            public string? Country { get; set; }
+            public string? Phone { get; set; }
+
         }
 
 
@@ -147,6 +155,11 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.Name = Input.Name;
+                user.Address = Input.Address;
+                user.City = Input.City;
+                user.Country = Input.Country;
+                user.PhoneNumber = Input.Phone;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
