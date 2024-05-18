@@ -11,9 +11,12 @@
 
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Company))
+                            {
                 <a asp-controller="Job" asp-action="Create" class="btn btn-secondary">
                     <i class="bi bi-plus-circle"></i> Create New Job
                 </a>
+                            }
             </div>
         </div>
         <table class="table table-bordered table-striped">

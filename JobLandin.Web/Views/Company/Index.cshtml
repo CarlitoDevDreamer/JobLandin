@@ -43,14 +43,17 @@
                         <td>@obj.Website</td>
                         <td><img src="@obj.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
                         <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-action="Update" asp-route-companyId="@obj.CompanyId" class="btn btn-success mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-action="Delete" asp-route-companyId="@obj.CompanyId" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            </div>
+                            @if (User.IsInRole(SD.Role_Admin))
+                            {
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-action="Update" asp-route-companyId="@obj.CompanyId" class="btn btn-success mx-2">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a asp-action="Delete" asp-route-companyId="@obj.CompanyId" class="btn btn-danger mx-2">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </div>
+                            }
                         </td>
                     </tr>
                 }

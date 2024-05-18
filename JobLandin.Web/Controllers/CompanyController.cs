@@ -1,11 +1,13 @@
 ﻿using JobLandin.Application.Common.Interfaces;
 using JobLandin.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobLandin.Web.Controllers
 {
 
+    
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,12 +27,14 @@ namespace JobLandin.Web.Controllers
 
 
         //GET
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Create()
         {
             return View();
         }
         //POST
         [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Company obj)
         {
@@ -76,6 +80,7 @@ namespace JobLandin.Web.Controllers
 
 
         //GET
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Update(int companyId)
         {
             Company? obj = _unitOfWork.Company.Get(u => u.CompanyId == companyId);
@@ -94,6 +99,7 @@ namespace JobLandin.Web.Controllers
 
         //POST
         [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
         [ValidateAntiForgeryToken]
         public IActionResult Update(Company obj)
         {
@@ -132,6 +138,7 @@ namespace JobLandin.Web.Controllers
 
 
         //GET DELETE
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Delete(int companyId)
         {
             Company? obj = _unitOfWork.Company.Get(u => u.CompanyId == companyId);
@@ -153,7 +160,7 @@ namespace JobLandin.Web.Controllers
 
         //POST DELETE
         [HttpPost]
-
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Delete(Company obj)
         {
             Company? objFromDb = _unitOfWork.Company.Get(u => u.CompanyId == obj.CompanyId);
