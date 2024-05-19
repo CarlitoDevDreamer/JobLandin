@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using JobLandin.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using JobLandin.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace JobLandin.Web.Controllers
@@ -33,6 +34,7 @@ namespace JobLandin.Web.Controllers
 
 
         //GET: Job/Create
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         public IActionResult Create()
         {
             JobVM jobVM = new()
@@ -48,6 +50,7 @@ namespace JobLandin.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobVM obj)
         {
