@@ -17,20 +17,20 @@ namespace JobLandin.Web.Controllers
 
         private readonly ILogger<JobController> _logger;
 
-        public JobController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ILogger<JobController> logger)
+        public JobController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager,
+            ILogger<JobController> logger)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = logger;
         }
+
         public IActionResult Index()
         {
-
             var jobs = _unitOfWork.Job.GetAll(includeProperties: "Company");
 
             return View(jobs);
         }
-
 
 
         //GET: Job/Create
@@ -56,38 +56,37 @@ namespace JobLandin.Web.Controllers
         {
             if (User.IsInRole(SD.Role_Company))
             {
-               
-            
+                var userId = _userManager.GetUserId(User);
+                _logger.LogInformation($"User ID: {userId}");
 
-            var userId = _userManager.GetUserId(User);
-            _logger.LogInformation($"User ID: {userId}");
+                var company = await _unitOfWork.Company.GetFirstOrDefaultAsync(c => c.UserId == userId);
+                _logger.LogInformation($"Company: {company}");
 
-            var company = await _unitOfWork.Company.GetFirstOrDefaultAsync(c => c.UserId == userId);
-            _logger.LogInformation($"Company: {company}");
+                if (company == null)
+                {
+                    return NotFound("Company not found for the current user.");
+                }
 
-            if (company == null)
-            {
-                return NotFound("Company not found for the current user.");
+                if (ModelState.IsValid)
+                {
+                    obj.Job.CompanyId = company.CompanyId;
+                    _unitOfWork.Job.Add(obj.Job);
+                    _unitOfWork.Save();
+                    TempData["success"] = "The Job Offer has been created successfully.";
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             if (ModelState.IsValid)
             {
-                obj.Job.CompanyId = company.CompanyId;
                 _unitOfWork.Job.Add(obj.Job);
                 _unitOfWork.Save();
                 TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            }
-            if (ModelState.IsValid)
-            {
 
-                _unitOfWork.Job.Add(obj.Job);
-                _unitOfWork.Save();
-                TempData["success"] = "The Job Offer has been created successfully.";
-                return RedirectToAction(nameof(Index));
-            }
-            _logger.LogInformation($"Model state is not valid. Errors: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}");
+            _logger.LogInformation(
+                $"Model state is not valid. Errors: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}");
 
             obj.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
             {
@@ -101,10 +100,29 @@ namespace JobLandin.Web.Controllers
 
         //GET UPDATE
 
-        //GET
+//GET
         [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
-        public IActionResult Update(int jobId)
+        public async Task<IActionResult> Update(int jobId)
         {
+            var job = _unitOfWork.Job.Get(u => u.Id == jobId);
+            if (job == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            if (User.IsInRole(SD.Role_Company))
+            {
+                var userId = _userManager.GetUserId(User);
+                var company = await _unitOfWork.Company.GetFirstOrDefaultAsync(c => c.UserId == userId);
+                if (company == null || job.CompanyId != company.CompanyId)
+                    if (!User.IsInRole(SD.Role_Admin))
+                    {
+                        {
+                            return Forbid(); // or any other action you want to take
+                        }
+                    }
+            }
+
             JobVM jobVm = new()
             {
                 CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
@@ -112,16 +130,11 @@ namespace JobLandin.Web.Controllers
                     Text = u.CompanyName,
                     Value = u.CompanyId.ToString()
                 }),
-                Job = _unitOfWork.Job.Get(u => u.Id == jobId)
+                Job = job
             };
 
-            if (jobVm.Job is null)
-            {
-                return RedirectToAction("Error", "Home");
-            }
             return View(jobVm);
         }
-
 
 
         //POST UPDATE
@@ -130,7 +143,6 @@ namespace JobLandin.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(JobVM jobVM)
         {
-
             if (ModelState.IsValid)
             {
                 _unitOfWork.Job.Update(jobVM.Job);
@@ -138,8 +150,6 @@ namespace JobLandin.Web.Controllers
                 TempData["success"] = "The Job Offer has been updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-
-
 
 
             jobVM.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
@@ -150,9 +160,7 @@ namespace JobLandin.Web.Controllers
 
 
             return View(jobVM);
-
         }
-
 
 
         //GET DELETE
@@ -174,10 +182,9 @@ namespace JobLandin.Web.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+
             return View(jobVM);
         }
-
-
 
 
         //POST DELETE
@@ -200,12 +207,5 @@ namespace JobLandin.Web.Controllers
             TempData["error"] = "The Job Offer could not be deleted.";
             return View(jobVm);
         }
-
-
-
-
-
-
-
     }
 }
