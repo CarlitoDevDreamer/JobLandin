@@ -71,16 +71,16 @@
 
                     <td>@obj.CreatedAt</td>
                     <td>
-                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Company))
+                        @if (User.IsInRole(SD.Role_Admin) || (User.IsInRole(SD.Role_Company) && obj.CompanyId == ViewBag.CompanyId))
                         {
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-action="Update" asp-route-jobId="@obj.Id" class="btn btn-success mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-action="Delete" asp-route-jobId="@obj.Id" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            </div>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-action="Update" asp-route-jobId="@obj.Id" class="btn btn-success mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-jobId="@obj.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
                         }
                     </td>
                 </tr>

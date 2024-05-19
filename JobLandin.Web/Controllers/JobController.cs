@@ -25,9 +25,19 @@ namespace JobLandin.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var jobs = _unitOfWork.Job.GetAll(includeProperties: "Company");
+
+            if (User.IsInRole(SD.Role_Company))
+            {
+                var userId = _userManager.GetUserId(User);
+                var company = await _unitOfWork.Company.GetFirstOrDefaultAsync(c => c.UserId == userId);
+                if (company != null)
+                {
+                    ViewBag.CompanyId = company.CompanyId;
+                }
+            }
 
             return View(jobs);
         }
