@@ -12,38 +12,40 @@
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Company))
-                            {
-                <a asp-controller="Job" asp-action="Create" class="btn btn-secondary">
-                    <i class="bi bi-plus-circle"></i> Create New Job
-                </a>
-                            }
+                {
+                    <a asp-controller="Job" asp-action="Create" class="btn btn-secondary">
+                        <i class="bi bi-plus-circle"></i> Create New Job
+                    </a>
+                }
             </div>
         </div>
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
-                    <th>Company</th>
-                    <th>Job Title</th>
-                    <th>Job Description</th>
-                    <th>Job Location</th>
-                    <th>Salary</th>
-                    <th>Application Method</th>
-                    <th>Apply Now</th>
-                    <th>Date Created</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <th>Job Location</th>
+                <th>Salary</th>
+                <th>Application Method</th>
+                <th>Apply Now</th>
+                <th>Date Created</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model)
-                {
-                    <tr>
-                        <td>@obj.Company.CompanyName<img src="@obj.Company.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
-                        <td>@obj.Title</td>
-                        <td>@obj.Description</td>
-                        <td>@obj.Location</td>
-                        <td>@obj.Salary</td>
-                        <td>@obj.ApplicationMethod</td>
-                        <td>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.Company.CompanyName<img src="@obj.Company.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
+                    <td>@obj.Title</td>
+                    <td>@obj.Description</td>
+                    <td>@obj.Location</td>
+                    <td>@obj.Salary</td>
+                    <td>@obj.ApplicationMethod</td>
+                    <td>
+                        @if (User.IsInRole(SD.Role_Candidate))
+                        {
                             @if (obj.ApplicationMethod == ApplicationType.Link)
                             {
                                 <a href="@obj.ApplicationDetails" class="btn btn-primary" target="_blank">Apply Now</a>
@@ -60,22 +62,33 @@
                             {
                                 <button type="button" class="btn btn-primary" onclick="handleApplication('@obj.ApplicationMethod', '@obj.ApplicationDetails')">Apply Now</button>
                             }
-                        </td>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" onclick="showAlert()">Apply Now</button>
+                        }
+                    </td>
 
-                        <td>@obj.CreatedAt</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-action="Update" asp-route-jobId="@obj.Id" class="btn btn-success mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-action="Delete" asp-route-jobId="@obj.Id" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    <td>@obj.CreatedAt</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-action="Update" asp-route-jobId="@obj.Id" class="btn btn-success mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-jobId="@obj.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    function showAlert() {
+        alert("Please, Register/Login as a Candidate to Apply for Jobs");
+        window.location.href = "/Identity/Account/Login";
+    }
+</script>
