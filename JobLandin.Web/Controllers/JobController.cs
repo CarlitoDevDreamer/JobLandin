@@ -51,10 +51,10 @@ namespace JobLandin.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobVM obj)
         {
-            if (!User.IsInRole(SD.Role_Company))
+            if (User.IsInRole(SD.Role_Company))
             {
-                return Unauthorized();
-            }
+               
+            
 
             var userId = _userManager.GetUserId(User);
             _logger.LogInformation($"User ID: {userId}");
@@ -75,7 +75,15 @@ namespace JobLandin.Web.Controllers
                 TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            }
+            if (ModelState.IsValid)
+            {
 
+                _unitOfWork.Job.Add(obj.Job);
+                _unitOfWork.Save();
+                TempData["success"] = "The Job Offer has been created successfully.";
+                return RedirectToAction(nameof(Index));
+            }
             _logger.LogInformation($"Model state is not valid. Errors: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}");
 
             obj.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
