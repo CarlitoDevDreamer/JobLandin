@@ -155,19 +155,24 @@ namespace JobLandin.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Ensure that the Job's Id is set correctly
+                if (jobVM.Job.Id <= 0)
+                {
+                    TempData["error"] = "Invalid Job Id.";
+                    return View(jobVM);
+                }
+
                 _unitOfWork.Job.Update(jobVM.Job);
                 _unitOfWork.Save();
                 TempData["success"] = "The Job Offer has been updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
-
             jobVM.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CompanyName,
                 Value = u.CompanyId.ToString()
             });
-
 
             return View(jobVM);
         }
