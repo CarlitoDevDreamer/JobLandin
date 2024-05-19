@@ -5,16 +5,22 @@ using Microsoft.EntityFrameworkCore;
 using JobLandin.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using JobLandin.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace JobLandin.Web.Controllers
 {
     public class JobController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public JobController(IUnitOfWork unitOfWork)
+        private readonly ILogger<JobController> _logger;
+
+        public JobController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ILogger<JobController> logger)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _logger = logger;
         }
         public IActionResult Index()
         {
@@ -43,18 +49,35 @@ namespace JobLandin.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(JobVM obj)
+        public async Task<IActionResult> Create(JobVM obj)
         {
-            
+            if (!User.IsInRole(SD.Role_Company))
+            {
+                return Unauthorized();
+            }
+
+            var userId = _userManager.GetUserId(User);
+            _logger.LogInformation($"User ID: {userId}");
+
+            var company = await _unitOfWork.Company.GetFirstOrDefaultAsync(c => c.UserId == userId);
+            _logger.LogInformation($"Company: {company}");
+
+            if (company == null)
+            {
+                return NotFound("Company not found for the current user.");
+            }
 
             if (ModelState.IsValid)
             {
+                obj.Job.CompanyId = company.CompanyId;
                 _unitOfWork.Job.Add(obj.Job);
                 _unitOfWork.Save();
                 TempData["success"] = "The Job Offer has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            
+
+            _logger.LogInformation($"Model state is not valid. Errors: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}");
+
             obj.CompanyList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CompanyName,
