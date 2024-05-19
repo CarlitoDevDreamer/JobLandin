@@ -102,6 +102,7 @@ namespace JobLandin.Web.Controllers
         //GET UPDATE
 
         //GET
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         public IActionResult Update(int jobId)
         {
             JobVM jobVm = new()
@@ -125,6 +126,7 @@ namespace JobLandin.Web.Controllers
 
         //POST UPDATE
         [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         [ValidateAntiForgeryToken]
         public IActionResult Update(JobVM jobVM)
         {
@@ -155,6 +157,7 @@ namespace JobLandin.Web.Controllers
 
         //GET DELETE
         //GET
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         public IActionResult Delete(int jobId)
         {
             JobVM jobVM = new()
@@ -179,6 +182,7 @@ namespace JobLandin.Web.Controllers
 
         //POST DELETE
         [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
         public IActionResult Delete(JobVM jobVm)
         {
             Job? objFromDb = _unitOfWork.Job.Get(_ => _.Id == jobVm.Job.Id);
