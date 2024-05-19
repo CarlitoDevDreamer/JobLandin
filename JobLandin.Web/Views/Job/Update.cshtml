@@ -14,13 +14,11 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
-
-                <div class="form-floating py-1 col-12">
+                <div class="form-floating py-1 col-12" style="display: none;">
                     <select asp-for="@Model.Job!.CompanyId" asp-items="@Model.CompanyList"
                             class="form-select border-bottom shadow">
                         <option disabled selected>-- Select Company --</option>
                     </select>
-
 
                     <label asp-for="Job!.CompanyId" class="ms-2"></label>
                     <span asp-validation-for="Job!.CompanyId" class="text-danger"></span>
