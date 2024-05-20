@@ -1,0 +1,60 @@
+﻿@model Candidate
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Update Company</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border-bottom p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="@Model.CandidateId" hidden />
+            <div class="col-10">
+                <div class="p-3">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-floating py-1 col-12">
+                        <input asp-for="CandidateName" class="form-control border shadow" />
+                        <label asp-for="CandidateName" class="ms-2"></label>
+                        <span asp-validation-for="CandidateName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-1 col-12">
+                        <input asp-for="Location" class="form-control border shadow" />
+                        <label asp-for="Location" class="ms-2"></label>
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-1 col-12">
+                        <input asp-for="Industry" class="form-control border shadow" />
+                        <label asp-for="Industry" class="ms-2"></label>
+                        <span asp-validation-for="Industry" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-floating py-1 col-12">
+                        <input asp-for="ProfilePicUrl" hidden class="form-control border shadow" />
+                        <input asp-for="Image" type="file" class="form-control border shadow" />
+                        <label asp-for="Image" class="ms-2"></label>
+                        <span asp-validation-for="ProfilePicUrl" class="text-danger"></span>
+                        <img src="@Model.ProfilePicUrl" alt="Current Logo" style="width: 100px; height: 100px;" />
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-check-circle"></i> Update
+                            </button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a asp-action="Index" class="btn btn-secondary w-100">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <img src="@Model.ProfilePicUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" />
+            </div>
+
+        </form>
+    </div>
+</div>

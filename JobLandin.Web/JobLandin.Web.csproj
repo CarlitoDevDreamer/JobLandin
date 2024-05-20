@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\CandidateProfilePics\" />
     <Folder Include="wwwroot\images\CompanyLogos\" />
   </ItemGroup>
 

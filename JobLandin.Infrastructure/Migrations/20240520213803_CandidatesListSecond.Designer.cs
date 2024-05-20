@@ -4,6 +4,7 @@ using JobLandin.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobLandin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520213803_CandidatesListSecond")]
+    partial class CandidatesListSecond
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,15 +48,45 @@ namespace JobLandin.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CandidateId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Candidates");
+
+                    b.HasData(
+                        new
+                        {
+                            CandidateId = 1,
+                            CandidateName = "John Doe",
+                            Industry = "Technology",
+                            Location = "Lagos",
+                            ProfilePicUrl = "https://placehold.co/200x200",
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            CandidateId = 2,
+                            CandidateName = "Jane Doe",
+                            Industry = "Technology",
+                            Location = "Abuja",
+                            ProfilePicUrl = "https://placehold.co/200x200",
+                            UserId = "2"
+                        },
+                        new
+                        {
+                            CandidateId = 3,
+                            CandidateName = "James Doe",
+                            Industry = "Technology",
+                            Location = "Port Harcourt",
+                            ProfilePicUrl = "https://placehold.co/200x200",
+                            UserId = "3"
+                        });
                 });
 
             modelBuilder.Entity("JobLandin.Domain.Entities.Company", b =>
@@ -182,7 +215,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "https://www.google.com/careers/",
                             ApplicationMethod = 0,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 5, 20, 22, 58, 27, 738, DateTimeKind.Local).AddTicks(3055),
+                            CreatedAt = new DateTime(2024, 5, 20, 22, 38, 3, 146, DateTimeKind.Local).AddTicks(6591),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Lagos",
                             Salary = 2000m,
@@ -194,7 +227,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "data@email.com",
                             ApplicationMethod = 1,
                             CompanyId = 3,
-                            CreatedAt = new DateTime(2024, 5, 20, 22, 58, 27, 738, DateTimeKind.Local).AddTicks(3114),
+                            CreatedAt = new DateTime(2024, 5, 20, 22, 38, 3, 146, DateTimeKind.Local).AddTicks(6652),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Abuja",
                             Salary = 1500m,
@@ -206,7 +239,7 @@ namespace JobLandin.Infrastructure.Migrations
                             ApplicationDetails = "08012345678",
                             ApplicationMethod = 2,
                             CompanyId = 2,
-                            CreatedAt = new DateTime(2024, 5, 20, 22, 58, 27, 738, DateTimeKind.Local).AddTicks(3118),
+                            CreatedAt = new DateTime(2024, 5, 20, 22, 38, 3, 146, DateTimeKind.Local).AddTicks(6656),
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             Location = "Port Harcourt",
                             Salary = 2500m,
@@ -444,14 +477,16 @@ namespace JobLandin.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasIndex("CandidateId");
+
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("JobLandin.Domain.Entities.Candidate", b =>
                 {
                     b.HasOne("JobLandin.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("Candidate")
-                        .HasForeignKey("JobLandin.Domain.Entities.Candidate", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -529,9 +564,15 @@ namespace JobLandin.Infrastructure.Migrations
 
             modelBuilder.Entity("JobLandin.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Candidate")
-                        .IsRequired();
+                    b.HasOne("JobLandin.Domain.Entities.Company", "Candidate")
+                        .WithMany()
+                        .HasForeignKey("CandidateId");
 
+                    b.Navigation("Candidate");
+                });
+
+            modelBuilder.Entity("JobLandin.Domain.Entities.ApplicationUser", b =>
+                {
                     b.Navigation("Company")
                         .IsRequired();
                 });

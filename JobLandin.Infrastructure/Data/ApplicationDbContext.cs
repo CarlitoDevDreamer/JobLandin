@@ -32,6 +32,12 @@ namespace JobLandin.Infrastructure.Data
                 .IsRequired(false);
 
 
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Candidate)
+                .WithOne(c => c.User)
+                .HasForeignKey<Candidate>(c => c.UserId);
+
+
 
             modelBuilder.Entity<Company>().HasData(new Company
 
@@ -119,12 +125,6 @@ namespace JobLandin.Infrastructure.Data
                 CreatedAt = DateTime.Now,
             }
             );
-
-
-
-
-
-
 
 
 

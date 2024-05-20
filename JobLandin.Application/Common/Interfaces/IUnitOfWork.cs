@@ -10,6 +10,7 @@ namespace JobLandin.Application.Common.Interfaces
     {
         ICompanyRepository Company { get; }
         IJobRepository Job { get; }
+        ICandidateRepository Candidate { get; }
         void Save();
     }
 }

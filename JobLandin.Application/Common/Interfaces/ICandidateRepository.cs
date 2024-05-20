@@ -6,5 +6,5 @@ namespace JobLandin.Application.Common.Interfaces;
 public interface ICandidateRepository : IRepository<Candidate>
 {
     void Update(Candidate entity);
-    //Task<Company> GetFirstOrDefaultAsync(Expression<Func<Company, bool>> filter = null);
+    Task<Candidate> GetFirstOrDefaultAsync(Expression<Func<Candidate, bool>> filter = null);
 }

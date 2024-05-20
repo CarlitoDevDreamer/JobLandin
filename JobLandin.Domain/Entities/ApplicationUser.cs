@@ -21,7 +21,7 @@ namespace JobLandin.Domain.Entities
         public Company Company { get; set; }
         
         public int? CandidateId { get; set; }
-        public Company Candidate { get; set; }
+        public Candidate Candidate { get; set; }
 
     }
 }
