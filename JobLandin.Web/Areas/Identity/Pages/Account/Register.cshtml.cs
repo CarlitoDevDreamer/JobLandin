@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System;
@@ -94,7 +95,8 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -111,23 +113,19 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
 
             public string? Role { get; set; }
 
-            [ValidateNever]
-            public IEnumerable<SelectListItem> RoleList { get; set; }
+            [ValidateNever] public IEnumerable<SelectListItem> RoleList { get; set; }
 
 
-            [Required]
-            public String Name { get; set; }
+            [Required] public String Name { get; set; }
             public string? Address { get; set; }
             public string? City { get; set; }
             public string? Country { get; set; }
             public string? Phone { get; set; }
-
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-
             if (!_roleManager.RoleExistsAsync(SD.Role_Candidate).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Candidate)).GetAwaiter().GetResult();
@@ -171,8 +169,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
 
-
-
+//Checks if the user is a CompanyRole User, and then creates a new Company Object and saves it to the database
                     if (Input.Role == SD.Role_Company)
                     {
                         var company = new Company
@@ -180,28 +177,42 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
                             CompanyName = Input.Name,
                             Location = Input.Address,
                             UserId = user.Id
-
                         };
 
                         // save company to database and get the generated id
-                         _context.Companies.Add(company);
-                         await _context.SaveChangesAsync();
+                        _context.Companies.Add(company);
+                        await _context.SaveChangesAsync();
 
                         // set the CompanyId for the user
                         user.CompanyId = company.CompanyId;
                     }
+                    
+                    
+//Checks if the user is a CandidateRole User, and then creates a new Candidate Object and saves it to the database
+                    if (Input.Role == SD.Role_Candidate)
+                    {
+                        var candidate = new Candidate
+                        {
+                            CandidateName = Input.Name,
+                            Location = Input.Address,
+                            UserId = user.Id
 
+                        };
 
+                        // save company to database and get the generated id
+                        _context.Candidates.Add(candidate);
+                        await _context.SaveChangesAsync();
 
-
-
-
+                        // set the CandidateId for the user
+                        user.CandidateId = candidate.CandidateId;
+                    }
 
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
-                    }else
+                    }
+                    else
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Candidate);
                     }
@@ -221,7 +232,8 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation",
+                            new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -229,6 +241,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -248,8 +261,8 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             catch
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                                                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                                                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
@@ -259,6 +272,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
+
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
     }

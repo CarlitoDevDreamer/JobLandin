@@ -15,8 +15,8 @@ namespace JobLandin.Infrastructure.Data
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
-
         public DbSet<ApplicationUser> applicationUsers { get; set; }
+        public DbSet<Candidate> Candidates { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // base.OnModelCreating(modelBuilder);
