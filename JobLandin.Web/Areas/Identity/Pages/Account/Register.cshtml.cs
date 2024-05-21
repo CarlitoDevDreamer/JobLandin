@@ -195,6 +195,7 @@ namespace JobLandin.Web.Areas.Identity.Pages.Account
                         {
                             CandidateName = Input.Name,
                             Location = Input.Address,
+                            ContactInfo = Input.Email,
                             UserId = user.Id
 
                         };

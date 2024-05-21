@@ -24,6 +24,7 @@
                 <th>Candidate</th>
                 <th>Location</th>
                 <th>Industry</th>
+                <th>Contact Info</th>
                 <th>ProfilePic</th>
             </tr>
             </thead>
@@ -34,6 +35,7 @@
                 <td>@obj.CandidateName</td>
                 <td>@obj.Location</td>
                 <td>@obj.Industry</td>
+                <td>@obj.ContactInfo</td>
                 <td><img src="@obj.ProfilePicUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 50%" /></td>
                 <td>
                     @if (User.IsInRole(SD.Role_Admin))

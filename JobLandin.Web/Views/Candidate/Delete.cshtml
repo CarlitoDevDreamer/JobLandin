@@ -28,7 +28,11 @@
                     <label asp-for="Industry" class="ms-2"></label>
                     <span asp-validation-for="Industry" class="text-danger"></span>
                 </div>
-                
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="ContactInfo" class="form-control border shadow"/>
+                    <label asp-for="ContactInfo" class="ms-2"></label>
+                    <span asp-validation-for="ContactInfo" class = "text-danger"></span>
+                </div>
 
                 <div class="form-floating py-1 col-12">
                     <input asp-for="ProfilePicUrl" class="form-control border shadow" />
