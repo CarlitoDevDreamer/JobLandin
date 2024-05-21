@@ -54,7 +54,7 @@ namespace JobLandin.Web.Controllers
                     else
                     {
                         Console.WriteLine("ProfilePic Image is null, using default ProfilePic logo URL."); // Logging
-                        obj.ProfilePicUrl = "https://placehold.co/200x200";
+                        obj.ProfilePicUrl = "https://placehold.co/50x50";
                     }
 
                     _unitOfWork.Candidate.Add(obj);
