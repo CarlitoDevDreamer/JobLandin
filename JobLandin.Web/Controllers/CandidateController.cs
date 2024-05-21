@@ -40,7 +40,7 @@ namespace JobLandin.Web.Controllers
                 try
                 {
                     //ProfilePic File Upload
-                    if (obj.Image != null)
+                    if (obj.Image is not  null)
                     {
                         Console.WriteLine("ProfilePic Image is not null, proceeding with file upload."); // Logging
 
@@ -50,6 +50,7 @@ namespace JobLandin.Web.Controllers
                         obj.Image.CopyTo(fileStream);
 
                         obj.ProfilePicUrl = @"\images\CandidateProfilePics\" + fileName;
+                        
                     }
                     else
                     {
