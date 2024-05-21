@@ -12,9 +12,9 @@
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
                 @if (User.IsInRole(SD.Role_Admin)){
-                <a asp-controller="Candidate" asp-action="Create" class="btn btn-secondary">
-                    <i class="bi bi-plus-circle"></i> Create New Candidate
-                </a>
+                    <a asp-controller="Candidate" asp-action="Create" class="btn btn-secondary">
+                        <i class="bi bi-plus-circle"></i> Create New Candidate
+                    </a>
                 }
             </div>
         </div>
@@ -31,28 +31,43 @@
             <tbody>
             @foreach (var obj in Model)
             {
-            <tr>
-                <td>@obj.CandidateName</td>
-                <td>@obj.Location</td>
-                <td>@obj.Industry</td>
-                <td>@obj.ContactInfo</td>
-                <td><img src="@obj.ProfilePicUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 50%" /></td>
-                <td>
-                    @if (User.IsInRole(SD.Role_Admin))
-                    {
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-action="Update" asp-route-candidateId="@obj.CandidateId" class="btn btn-success mx-2">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        <a asp-action="Delete" asp-route-candidateId="@obj.CandidateId" class="btn btn-danger mx-2">
-                            <i class="bi bi-trash"></i> Delete
-                        </a>
-                    </div>
-                    }
-                </td>
-            </tr>
+                <tr>
+                    <td>@obj.CandidateName</td>
+                    <td>@obj.Location</td>
+                    <td>@obj.Industry</td>
+                    <td>
+                        @if (User.IsInRole(SD.Role_Company) || User.IsInRole(SD.Role_Admin))
+                        {
+                            <a href="mailto:@obj.ContactInfo" class="btn btn-primary">Get in Touch</a>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" onclick="showAlert()">Contact Candidate</button>
+                        }
+                    </td>
+                    <td><img src="@obj.ProfilePicUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 50%" /></td>
+                    <td>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-action="Update" asp-route-candidateId="@obj.CandidateId" class="btn btn-success mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-action="Delete" asp-route-candidateId="@obj.CandidateId" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        }
+                    </td>
+                </tr>
             }
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    function showAlert() {
+        alert("Please, Register/Login as a Company to Get in Touch with Candidates");
+        window.location.href = "/Identity/Account/Login";
+    }
+</script>

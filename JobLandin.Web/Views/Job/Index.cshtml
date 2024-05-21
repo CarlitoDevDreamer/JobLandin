@@ -17,6 +17,14 @@
                         <i class="bi bi-plus-circle"></i> Create New Job
                     </a>
                 }
+                else
+                {
+                    <button type="button" class="btn btn-primary" onclick="showAlertCreate()"> 
+                        <a asp-controller="Job" asp-action="Create" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Create New Job
+                        </a>
+                    </button>
+                }
             </div>
         </div>
         <table class="table table-bordered table-striped">
@@ -44,7 +52,7 @@
                     <td>@obj.Salary</td>
                     <td>@obj.ApplicationMethod</td>
                     <td>
-                        @if (User.IsInRole(SD.Role_Candidate))
+                        @if (User.IsInRole(SD.Role_Candidate) || User.IsInRole(SD.Role_Admin))
                         {
                             @if (obj.ApplicationMethod == ApplicationType.Link)
                             {
@@ -92,6 +100,10 @@
 <script>
     function showAlert() {
         alert("Please, Register/Login as a Candidate to Apply for Jobs");
+        window.location.href = "/Identity/Account/Login";
+    }
+    function showAlertCreate() {
+        alert("Please, Register/Login as a Company to Create Job Posts");
         window.location.href = "/Identity/Account/Login";
     }
 </script>
