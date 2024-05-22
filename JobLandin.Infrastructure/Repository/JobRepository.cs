@@ -1,6 +1,7 @@
 ﻿using JobLandin.Application.Common.Interfaces;
 using JobLandin.Domain.Entities;
 using JobLandin.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobLandin.Infrastructure.Repository
 {
@@ -23,6 +24,7 @@ namespace JobLandin.Infrastructure.Repository
         public IEnumerable<Job> SearchJobs(string searchString)
         {
             return _db.Set<Job>()
+                .Include(j => j.Company) // Include the related Company data
                 .Where(j => j.Title.Contains(searchString) || j.Description.Contains(searchString))
                 .ToList();
         }
