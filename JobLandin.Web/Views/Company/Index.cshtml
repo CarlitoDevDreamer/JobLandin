@@ -40,7 +40,7 @@
                         <td>@obj.Industry</td>
                         <td>@obj.Size</td>
                         <td>@obj.Description</td>
-                        <td>@obj.Website</td>
+                        <td><td><a href="@obj.Website" target="_blank" class="btn btn-primary" role="button">Website</a></td></td>
                         <td><img src="@obj.LogoUrl" style="border-radius:5px; border: 1px solid #bbb9b9; width: 100%" /></td>
                         <td>
                             @if (User.IsInRole(SD.Role_Admin))
