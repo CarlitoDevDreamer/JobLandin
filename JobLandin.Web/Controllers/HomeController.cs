@@ -19,12 +19,13 @@ namespace JobLandin.Web.Controllers
 
         public IActionResult Index(string searchString)
         {
+            _logger.LogInformation($"Search string received: {searchString}");
             var jobs = string.IsNullOrEmpty(searchString) 
                 ? new List<Job>() 
                 : _jobRepository.SearchJobs(searchString);
+            _logger.LogInformation($"Number of jobs retrieved: {jobs.Count()}");
             return View(jobs);
         }
-        
 
         public IActionResult Privacy()
         {
