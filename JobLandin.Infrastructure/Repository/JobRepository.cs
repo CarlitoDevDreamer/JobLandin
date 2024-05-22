@@ -19,5 +19,12 @@ namespace JobLandin.Infrastructure.Repository
         {
             _db.Update(entity);
         }
+
+        public IEnumerable<Job> SearchJobs(string searchString)
+        {
+            return _db.Set<Job>()
+                .Where(j => j.Title.Contains(searchString) || j.Description.Contains(searchString))
+                .ToList();
+        }
     }
 }
